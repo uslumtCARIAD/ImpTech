@@ -1,1 +1,28 @@
+<<<<<<< HEAD
 include ../Makefile.generic
+=======
+ACFLAGS ?= -v1 -k 
+ACXX    ?= $(PWD)/ag++ --data_joinpoints --builtin_operators
+export ACXX
+
+ACTESTS = $(filter-out Makefile%, $(filter-out CVS,$(notdir $(wildcard $(PWD)/examples/*))))
+
+.PHONY: $(ACTESTS)
+
+all: testrun
+
+test: $(addsuffix .make, $(ACTESTS))
+
+testrun: test $(addsuffix .run, $(ACTESTS))
+
+clean: $(addsuffix .clean, $(ACTESTS))
+
+%.make: %
+	make -C examples/$<
+
+%.run: %
+	make -C examples/$< run
+
+%.clean: %
+	make -C examples/$< clean
+>>>>>>> 6f819b7ab476b9b44aae9a65304015b5f380303b
