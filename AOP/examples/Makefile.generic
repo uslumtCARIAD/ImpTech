@@ -3,11 +3,11 @@ ACXX ?= ag++
 
 PROG:=$(shell basename $$PWD)
 
-SOURCES := $(wildcard *.cc)
+SOURCES := $(wildcard *.c)
 
 JUNK    := Junk
-OBJECTS := $(addprefix $(JUNK)/,$(patsubst %.cc,%.o,$(SOURCES)))
-DEPS    := $(addprefix $(JUNK)/,$(patsubst %.cc,%.d,$(SOURCES)))
+OBJECTS := $(addprefix $(JUNK)/,$(patsubst %.c,%.o,$(SOURCES)))
+DEPS    := $(addprefix $(JUNK)/,$(patsubst %.c,%.d,$(SOURCES)))
 HEADERS := $(wildcard *.h)
 ASPECTS := $(wildcard *.ah)
 INCLUDE_LIST := $(patsubst %.ah,-include %.ah,$(ASPECTS))
@@ -24,11 +24,11 @@ $(PROG): $(OBJECTS)
 clean:
 	@rm -rf *.o $(JUNK) $(PROG)
 
-$(JUNK)/%.o : %.cc
+$(JUNK)/%.o : %.c
 	@echo Compiling $<
 	@$(ACXX) $(CXXFLAGS) -x c++ -c $< -o $@
 
-$(JUNK)/%.d : %.cc
+$(JUNK)/%.d : %.c
 	@mkdir -p $(JUNK)
 	@$(CXX) $(CXXFLAGS) -x c++ -MM $(INCLUDE_LIST) $< | \
         sed -e "s/$*\.o/$(JUNK)\/& $(JUNK)\/$*.d/g" > $@
