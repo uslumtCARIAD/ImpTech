@@ -1,0 +1,3 @@
+[submodule "AOP/examples/CodeGen"]
+	path = AOP/examples/CodeGen
+	url = https://github.com/vwdfive/CodeGen.git
