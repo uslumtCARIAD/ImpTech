@@ -1,0 +1,35 @@
+include "rte.h" // this is the header file for RTE macro definitions
+
+aspect RTE {
+    /*
+    template <typename T>
+    T* map (T *in) {       //make sure there is no function calls in binary. (check with Olaf or try to implement individually)
+        if (in == &var1)
+            return &real_var1; // here we might use the macro
+        if (in == &var2)
+            return &real_var2;
+        return nullptr;
+    }
+    */
+
+
+
+    advice get("% var1") : around() { //var% would give more generic (so var1 and var2)
+        printf("get(\"%s\") -> %p / %p\n", JoinPoint::signature(), tjp->entity(), &Rte_IRead_swc1_output()->Val);
+        *tjp->result() = Rte_IRead_swc1_output()->Val; // read the mapped variable instead
+    }
+
+    /* advice ref("% var%") : around() { //var% would give more generic (so var1 and var2) // returns the address 
+        printf("ref(\"%s\") -> %p / %p\n", JoinPoint::signature(), tjp->entity(), map(tjp->entity()));
+        *tjp->result() = map(tjp->entity()); // read the mapped variable instead
+    }
+    */
+
+    advice set("% var1") : around() {
+        printf("set(\"%s\") -> %p / %p\n", JoinPoint::signature(), tjp->entity(), &Rte_IRead_swc1_output()->Val);
+
+        //*map(tjp->entity()) = *tjp->arg<0>();
+        //*tjp->arg<0>() = Rte_IRead_swc1_output()->Val; // setting new value to the variable
+        Rte_IRead_swc1_output()->Val = *tjp->arg<0>();
+    }
+};
