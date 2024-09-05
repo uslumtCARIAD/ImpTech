@@ -15,8 +15,8 @@ aspect RTE {
 
 
     advice get("% var1") : around() { //var% would give more generic (so var1 and var2)
-        printf("get(\"%s\") -> %p / %p\n", JoinPoint::signature(), tjp->entity(), &Rte_IRead_ABS_IntvFrLe()->Val);
-        *tjp->result() = Rte_IRead_ABS_IntvFrLe()->Val; // read the mapped variable instead
+        printf("get(\"%s\") -> %p / %p\n", JoinPoint::signature(), tjp->entity(), &Rte_IRead_swc1_output()->Val);
+        *tjp->result() = Rte_IRead_swc1_output()->Val; // read the mapped variable instead
     }
 
     /* advice ref("% var%") : around() { //var% would give more generic (so var1 and var2) // returns the address 
@@ -26,10 +26,10 @@ aspect RTE {
     */
 
     advice set("% var1") : around() {
-        printf("set(\"%s\") -> %p / %p\n", JoinPoint::signature(), tjp->entity(), &Rte_IRead_ABS_IntvFrLe()->Val);
+        printf("set(\"%s\") -> %p / %p\n", JoinPoint::signature(), tjp->entity(), &Rte_IRead_swc1_output()->Val);
 
         //*map(tjp->entity()) = *tjp->arg<0>();
-        //*tjp->arg<0>() = Rte_IRead_ABS_IntvFrLe()->Val; // setting new value to the variable
-        Rte_IRead_ABS_IntvFrLe()->Val = *tjp->arg<0>();
+        //*tjp->arg<0>() = Rte_IRead_swc1_output()->Val; // setting new value to the variable
+        Rte_IRead_swc1_output()->Val = *tjp->arg<0>();
     }
 };
