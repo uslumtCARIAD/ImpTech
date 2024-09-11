@@ -1,1 +1,6 @@
+RUN for output
 ag++ --builtin_operators --data_joinpoints -r repo.acp -k -O3  -o out rte_get.cc
+
+RUN for examine the object file
+ag++ --keep_woven --builtin_operators --data_joinpoints -r repo.acp -k -O3  -c rte_get.cc  
+objdump -d --demangle --reloc rte_get.o | less
