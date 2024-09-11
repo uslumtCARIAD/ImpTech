@@ -1,0 +1,26 @@
+#include "rte.h"
+
+aspect RTE {
+    advice get("% ABS_IntvFrLe") : around() { //var% would give more generic (so var1 and var2)
+        printf("get(\"%s\") -> %p / %p\n", JoinPoint::signature(), tjp->entity(), &Rte_IRead_ABS_IntvFrLe()->Val);
+        *tjp->result() = Rte_IRead_ABS_IntvFrLe()->Val; // read the mapped variable instead
+    }
+
+    advice set("% ABS_IntvFrLe") : around() {
+        printf("set(\"%s\") -> %p / %p\n", JoinPoint::signature(), tjp->entity(), &Rte_IRead_ABS_IntvFrLe()->Val);
+        *tjp->arg<0>() = Rte_IRead_ABS_IntvFrLe()->Val; // setting new value to the variable
+        //Rte_IRead_ABS_IntvFrLe()->Val = *tjp->arg<0>();
+    }
+
+      /* signal classifier */
+    advice get("% ABS_IntvFrLe_classifier") : around() { //var% would give more generic (so var1 and var2)
+        printf("get(\"%s\") -> %p / %p\n", JoinPoint::signature(), tjp->entity(), &Rte_IRead_ABS_IntvFrLe()->Clas);
+        *tjp->result() = Rte_IRead_ABS_IntvFrLe()->Clas; // read the mapped variable instead
+    }
+
+    advice set("% ABS_IntvFrLe_classifier") : around() {
+        printf("set(\"%s\") -> %p / %p\n", JoinPoint::signature(), tjp->entity(), &Rte_IRead_ABS_IntvFrLe()->Clas);
+        *tjp->arg<0>() = Rte_IRead_ABS_IntvFrLe()->Clas; // setting new value to the variable
+        //Rte_IRead_ABS_IntvFrLe()->Clas = *tjp->arg<0>();
+    }
+};
